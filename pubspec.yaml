@@ -21,6 +21,8 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^1.0.0
   very_good_analysis: ^5.1.0
+  analysis_defaults:
+    path: packages/analysis_defaults
 
 flutter:
   uses-material-design: true

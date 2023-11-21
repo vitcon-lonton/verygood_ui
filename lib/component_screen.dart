@@ -1064,6 +1064,12 @@ class _ProgressIndicatorsState extends State<ProgressIndicators> {
 const List<NavigationDestination> appBarDestinations = [
   NavigationDestination(
     tooltip: '',
+    icon: Icon(Icons.mail_outline_rounded),
+    label: 'Components',
+    selectedIcon: Icon(Icons.mail_rounded),
+  ),
+  NavigationDestination(
+    tooltip: '',
     icon: Icon(Icons.widgets_outlined),
     label: 'Components',
     selectedIcon: Icon(Icons.widgets),

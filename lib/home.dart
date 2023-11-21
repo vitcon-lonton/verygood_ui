@@ -8,16 +8,15 @@ import 'color_palettes_screen.dart';
 import 'component_screen.dart';
 import 'constants.dart';
 import 'elevation_screen.dart';
+import 'inbox_screen.dart' show FirstInboxList, SecondInboxList;
 import 'typography_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({
     super.key,
     required this.useLightMode,
-    required this.useMaterial3,
     required this.colorSelected,
     required this.handleBrightnessChange,
-    required this.handleMaterialVersionChange,
     required this.handleColorSelect,
     required this.handleImageSelect,
     required this.colorSelectionMethod,
@@ -25,13 +24,11 @@ class Home extends StatefulWidget {
   });
 
   final bool useLightMode;
-  final bool useMaterial3;
   final ColorSeed colorSelected;
   final ColorImageProvider imageSelected;
   final ColorSelectionMethod colorSelectionMethod;
 
   final void Function(bool useLightMode) handleBrightnessChange;
-  final void Function() handleMaterialVersionChange;
   final void Function(int value) handleColorSelect;
   final void Function(int value) handleImageSelect;
 
@@ -47,7 +44,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   bool showMediumSizeLayout = false;
   bool showLargeSizeLayout = false;
 
-  int screenIndex = ScreenSelected.component.value;
+  // int screenIndex = ScreenSelected.component.value;
+  int screenIndex = ScreenSelected.inbox.value;
 
   @override
   initState() {
@@ -110,6 +108,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget createScreenFor(
       ScreenSelected screenSelected, bool showNavBarExample) {
     switch (screenSelected) {
+      case ScreenSelected.inbox:
+        return Expanded(
+          child: OneTwoTransition(
+            animation: railAnimation,
+            one: FirstInboxList(
+                showNavBottomBar: showNavBarExample,
+                showSecondList: showMediumSizeLayout || showLargeSizeLayout),
+            two: const SecondInboxList(),
+          ),
+        );
       case ScreenSelected.component:
         return Expanded(
           child: OneTwoTransition(
@@ -132,18 +140,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
-  PreferredSizeWidget createAppBar() {
+  PreferredSizeWidget? createAppBar() {
+    if (showMediumSizeLayout || showLargeSizeLayout) return null;
+
     return AppBar(
-      title: widget.useMaterial3
-          ? const Text('Material 3')
-          : const Text('Material 2'),
+      title: const Text('Material 3'),
       actions: !showMediumSizeLayout && !showLargeSizeLayout
           ? [
               _BrightnessButton(
                 handleBrightnessChange: widget.handleBrightnessChange,
-              ),
-              _Material3Button(
-                handleMaterialVersionChange: widget.handleMaterialVersionChange,
               ),
               _ColorSeedButton(
                 handleColorSelect: widget.handleColorSelect,
@@ -166,12 +171,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           Flexible(
             child: _BrightnessButton(
               handleBrightnessChange: widget.handleBrightnessChange,
-              showTooltipBelow: false,
-            ),
-          ),
-          Flexible(
-            child: _Material3Button(
-              handleMaterialVersionChange: widget.handleMaterialVersionChange,
               showTooltipBelow: false,
             ),
           ),
@@ -203,7 +202,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           railAnimation: railAnimation,
           appBar: createAppBar(),
           body: createScreenFor(
-              ScreenSelected.values[screenIndex], controller.value == 1),
+              ScreenSelected.values[screenIndex], controller.value == 2),
           navigationRail: NavigationRail(
             extended: showLargeSizeLayout,
             destinations: navRailDestinations,
@@ -221,9 +220,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     ? _ExpandedTrailingActions(
                         useLightMode: widget.useLightMode,
                         handleBrightnessChange: widget.handleBrightnessChange,
-                        useMaterial3: widget.useMaterial3,
-                        handleMaterialVersionChange:
-                            widget.handleMaterialVersionChange,
                         handleImageSelect: widget.handleImageSelect,
                         handleColorSelect: widget.handleColorSelect,
                         colorSelectionMethod: widget.colorSelectionMethod,
@@ -270,31 +266,6 @@ class _BrightnessButton extends StatelessWidget {
             ? const Icon(Icons.dark_mode_outlined)
             : const Icon(Icons.light_mode_outlined),
         onPressed: () => handleBrightnessChange(!isBright),
-      ),
-    );
-  }
-}
-
-class _Material3Button extends StatelessWidget {
-  const _Material3Button({
-    required this.handleMaterialVersionChange,
-    this.showTooltipBelow = true,
-  });
-
-  final void Function() handleMaterialVersionChange;
-  final bool showTooltipBelow;
-
-  @override
-  Widget build(BuildContext context) {
-    final useMaterial3 = Theme.of(context).useMaterial3;
-    return Tooltip(
-      preferBelow: showTooltipBelow,
-      message: 'Switch to Material ${useMaterial3 ? 2 : 3}',
-      child: IconButton(
-        icon: useMaterial3
-            ? const Icon(Icons.filter_2)
-            : const Icon(Icons.filter_3),
-        onPressed: handleMaterialVersionChange,
       ),
     );
   }
@@ -420,8 +391,6 @@ class _ExpandedTrailingActions extends StatelessWidget {
   const _ExpandedTrailingActions({
     required this.useLightMode,
     required this.handleBrightnessChange,
-    required this.useMaterial3,
-    required this.handleMaterialVersionChange,
     required this.handleColorSelect,
     required this.handleImageSelect,
     required this.imageSelected,
@@ -430,12 +399,10 @@ class _ExpandedTrailingActions extends StatelessWidget {
   });
 
   final void Function(bool) handleBrightnessChange;
-  final void Function() handleMaterialVersionChange;
   final void Function(int) handleImageSelect;
   final void Function(int) handleColorSelect;
 
   final bool useLightMode;
-  final bool useMaterial3;
 
   final ColorImageProvider imageSelected;
   final ColorSeed colorSelected;
@@ -459,19 +426,6 @@ class _ExpandedTrailingActions extends StatelessWidget {
                   value: useLightMode,
                   onChanged: (value) {
                     handleBrightnessChange(value);
-                  })
-            ],
-          ),
-          Row(
-            children: [
-              useMaterial3
-                  ? const Text('Material 3')
-                  : const Text('Material 2'),
-              Expanded(child: Container()),
-              Switch(
-                  value: useMaterial3,
-                  onChanged: (_) {
-                    handleMaterialVersionChange();
                   })
             ],
           ),
@@ -594,7 +548,7 @@ class NavigationTransition extends StatefulWidget {
       required this.railAnimation,
       required this.navigationRail,
       required this.navigationBar,
-      required this.appBar,
+      this.appBar,
       required this.body});
 
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -602,7 +556,7 @@ class NavigationTransition extends StatefulWidget {
   final CurvedAnimation railAnimation;
   final Widget navigationRail;
   final Widget navigationBar;
-  final PreferredSizeWidget appBar;
+  final PreferredSizeWidget? appBar;
   final Widget body;
 
   @override
@@ -653,7 +607,7 @@ class _NavigationTransitionState extends State<NavigationTransition> {
         backgroundColor: colorScheme.surface,
         child: widget.navigationBar,
       ),
-      endDrawer: const NavigationDrawerSection(),
+      // endDrawer: const NavigationDrawerSection(),
     );
   }
 }
@@ -872,3 +826,5 @@ class _OneTwoTransitionState extends State<OneTwoTransition> {
     );
   }
 }
+
+class _AppBar extends AppBar {}

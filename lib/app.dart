@@ -17,7 +17,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   bool useMaterial3 = true;
   ThemeMode themeMode = ThemeMode.system;
-  ColorSeed colorSelected = ColorSeed.baseColor;
+  ColorSeed colorSelected = ColorSeed.blue;
   ColorImageProvider imageSelected = ColorImageProvider.leaves;
   ColorScheme? imageColorScheme = const ColorScheme.light();
   ColorSelectionMethod colorSelectionMethod = ColorSelectionMethod.colorSeed;
@@ -37,12 +37,6 @@ class _AppState extends State<App> {
   void handleBrightnessChange(bool useLightMode) {
     setState(() {
       themeMode = useLightMode ? ThemeMode.light : ThemeMode.dark;
-    });
-  }
-
-  void handleMaterialVersionChange() {
-    setState(() {
-      useMaterial3 = !useMaterial3;
     });
   }
 
@@ -90,11 +84,9 @@ class _AppState extends State<App> {
       ),
       home: Home(
         useLightMode: useLightMode,
-        useMaterial3: useMaterial3,
         colorSelected: colorSelected,
         imageSelected: imageSelected,
         handleBrightnessChange: handleBrightnessChange,
-        handleMaterialVersionChange: handleMaterialVersionChange,
         handleColorSelect: handleColorSelect,
         handleImageSelect: handleImageSelect,
         colorSelectionMethod: colorSelectionMethod,

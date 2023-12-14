@@ -9,13 +9,12 @@ import '../sample/constants.dart';
 import '../sample/models/models.dart';
 import '../sample/transitions/list_detail_transition.dart';
 import '../sample/widgets/animated_floating_action_button.dart';
+import '../sample/widgets/avatar_button.dart';
 import '../sample/widgets/disappearing_bottom_navigation_bar.dart';
 import '../sample/widgets/disappearing_navigation_rail.dart';
 import '../sample/widgets/email_list_view.dart';
 import '../sample/widgets/reply_list_view.dart';
-import '../sample/widgets/avatar_button.dart';
-import '../sample/widgets/search_bar.dart' as sb;
-import '../sample/widgets/search_anchor.dart' as search_anchor;
+import 'widgets/animated_search_anchor.dart';
 
 class Feed extends StatefulWidget {
   const Feed({
@@ -59,41 +58,14 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
   late final scaffoldKey = GlobalKey<ScaffoldState>();
 
   int selectedIndex = 0;
-
-  WindowClasses window = WindowClasses.compact;
-
   bool controllerInitialized = false;
-  // bool showMediumSizeLayout = false;
-  // bool showLargeSizeLayout = false;
+  WindowClasses window = WindowClasses.compact;
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-
-  //   final double width = MediaQuery.of(context).size.width;
-  //   final AnimationStatus status = _controller.status;
-  //   if (width > 600) {
-  //     if (status != AnimationStatus.forward &&
-  //         status != AnimationStatus.completed) {
-  //       _controller.forward();
-  //     }
-  //   } else {
-  //     if (status != AnimationStatus.reverse &&
-  //         status != AnimationStatus.dismissed) {
-  //       _controller.reverse();
-  //     }
-  //   }
-  //   if (!controllerInitialized) {
-  //     controllerInitialized = true;
-  //     _controller.value = width > 600 ? 1 : 0;
-  //   }
-  // }
 
   @override
   void didChangeDependencies() {
@@ -103,13 +75,9 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     final AnimationStatus status = _controller.status;
     if (width > mediumWidthBreakpoint) {
       if (width > largeWidthBreakpoint) {
-        // showMediumSizeLayout = false;
-        // showLargeSizeLayout = true;
         window = WindowClasses.expanded;
       } else {
         window = WindowClasses.medium;
-        // showMediumSizeLayout = true;
-        // showLargeSizeLayout = false;
       }
       if (status != AnimationStatus.forward &&
           status != AnimationStatus.completed) {
@@ -117,8 +85,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
       }
     } else {
       window = WindowClasses.compact;
-      // showMediumSizeLayout = false;
-      // showLargeSizeLayout = false;
       if (status != AnimationStatus.reverse &&
           status != AnimationStatus.dismissed) {
         _controller.reverse();
@@ -159,21 +125,20 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
   PreferredSizeWidget appBar() {
     return AppBar(
       leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
-      // title: search_anchor.RepliesSearchAnchor(
-      //   barTrailing: [
-      //     AvatarButton(child: Image.asset(widget.currentUser.avatarUrl))
-      //   ],
-      // ),
-      // title: sb.SearchBar(currentUser: widget.currentUser),
-      // title: const Text('Material 3'),
-      // bottom: PreferredSize(
-      //   preferredSize: const Size.fromHeight(50),
-      //   child: search_anchor.RepliesSearchAnchor(
-      //     barTrailing: [
-      //       AvatarButton(child: Image.asset(widget.currentUser.avatarUrl))
-      //     ],
-      //   ),
-      // ),
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14.0),
+          child: AnimatedSearchAnchor(
+            animation: _barAnimation,
+            barTrailing: [
+              AvatarButton(child: Image.asset(widget.currentUser.avatarUrl))
+            ],
+          ),
+        ),
+      ),
       actions: [
         _BrightnessButton(
           handleBrightnessChange: widget.handleBrightnessChange,
@@ -198,10 +163,10 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
       animation: _controller,
       builder: (context, _) {
         return Scaffold(
-          // appBar: switch (window) {
-          //   WindowClasses.compact => appBar(),
-          //   _ => appBar(),
-          // },
+          appBar: switch (window) {
+            WindowClasses.compact => appBar(),
+            _ => null,
+          },
           body: Row(
             children: [
               DisappearingNavigationRail(
@@ -224,54 +189,18 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                 child: ListDetailTransition(
                   animation: _railAnimation,
                   one: SliverEmailListView(
-                    // top: switch (window) {
-                    //   WindowClasses.compact => null,
-                    //   // _ => search_anchor.RepliesSearchAnchor(barTrailing: [
-                    //   //     AvatarButton(
-                    //   //       child: Image.asset(widget.currentUser.avatarUrl),
-                    //   //     )
-                    //   //   ]),
-                    //   _ => appBar(),
-                    // },
-                    // top: SliverAppBar(
-                    //   // snap: true,
-                    //   // floating: true,
-                    //   // elevation: 0,
-                    //   expandedHeight: 150,
-                    //   // title: const SizedBox(),
-                    //   flexibleSpace: FlexibleSpaceBar(
-                    //     title: search_anchor.RepliesSearchAnchor(
-                    //       barTrailing: [
-                    //         AvatarButton(
-                    //             child:
-                    //                 Image.asset(widget.currentUser.avatarUrl))
-                    //       ],
-                    //     ),
-                    //     background: search_anchor.RepliesSearchAnchor(
-                    //       barTrailing: [
-                    //         AvatarButton(
-                    //             child:
-                    //                 Image.asset(widget.currentUser.avatarUrl))
-                    //       ],
-                    //     ),
-                    //   ),
-                    //   // title: search_anchor.RepliesSearchAnchor(
-                    //   //   barTrailing: [
-                    //   //     AvatarButton(
-                    //   //         child: Image.asset(widget.currentUser.avatarUrl))
-                    //   //   ],
-                    //   // ),
-                    //   // bottom: PreferredSize(
-                    //   //   preferredSize: const Size.fromHeight(0),
-                    //   //   child: search_anchor.RepliesSearchAnchor(
-                    //   //     barTrailing: [
-                    //   //       AvatarButton(
-                    //   //           child:
-                    //   //               Image.asset(widget.currentUser.avatarUrl))
-                    //   //     ],
-                    //   //   ),
-                    //   // ),
-                    // ),
+                    top: switch (window) {
+                      WindowClasses.compact => null,
+                      _ => AnimatedSearchAnchor(
+                          animation: _railFabAnimation,
+                          barTrailing: [
+                            AvatarButton(
+                              child: Image.asset(widget.currentUser.avatarUrl),
+                            )
+                          ],
+                        ),
+                      // _ => appBar(),
+                    },
                     selectedIndex: selectedIndex,
                     onSelected: (index) {},
                   ),

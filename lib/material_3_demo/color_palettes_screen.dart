@@ -58,13 +58,7 @@ class ColorPalettesScreen extends StatelessWidget {
               TextSpan(
                 text: 'dynamic_color',
                 style: const TextStyle(decoration: TextDecoration.underline),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () async {
-                    // ignore: unused_local_variable
-                    final url = Uri.parse(
-                      'https://pub.dev/packages/dynamic_color',
-                    );
-                  },
+                recognizer: TapGestureRecognizer()..onTap = () {},
               ),
               const TextSpan(text: ' package.'),
             ],

@@ -244,6 +244,8 @@ class Containment extends StatelessWidget {
       Cards(),
       Dialogs(),
       Dividers(),
+      // TODO: Add Lists, https://github.com/flutter/flutter/issues/114006
+      // TODO: Add Side sheets, https://github.com/flutter/flutter/issues/119328
     ]);
   }
 }
@@ -1060,12 +1062,6 @@ class _ProgressIndicatorsState extends State<ProgressIndicators> {
 }
 
 const List<NavigationDestination> appBarDestinations = [
-  NavigationDestination(
-    tooltip: '',
-    icon: Icon(Icons.mail_outline_rounded),
-    label: 'Inbox',
-    selectedIcon: Icon(Icons.mail_rounded),
-  ),
   NavigationDestination(
     tooltip: '',
     icon: Icon(Icons.widgets_outlined),

@@ -75,6 +75,101 @@ class SliverEmailListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0).copyWith(top: 12),
+      child: CustomScrollView(
+        slivers: [
+          // const SizedBox(height: 8),
+          // search_bar.SearchBar(currentUser: currentUser),
+          // const SizedBox(height: 8),
+          // if (top != null) ...[
+          //   const SliverToBoxAdapter(child: SizedBox(height: 12)),
+          //   top!,
+          // ],
+          // const SliverFillRemaining(child: SizedBox(height: 12)),
+          // const SliverToBoxAdapter(child: SizedBox(height: 12)),
+
+          if (top != null) ...[
+            SliverAppBar.medium(
+              // backgroundColor: Colors.amberAccent,
+              // title: TextFormField(),
+              expandedHeight: 0,
+              toolbarHeight: 0,
+              pinned: true,
+              collapsedHeight: 68,
+              // elevation: 2,
+              scrolledUnderElevation: 0,
+              floating: true,
+              // collapsedHeight: 200,
+              flexibleSpace: PreferredSize(
+                preferredSize: const Size.fromHeight(68),
+                child: Container(child: top),
+              ),
+              // title: TextField(),
+              // bottom:   TextFormField(),
+            ),
+          ],
+
+          // SliverAppBar.medium(
+          //   // backgroundColor: Colors.amberAccent,
+          //   // title: TextFormField(),
+          //   expandedHeight: 0,
+          //   toolbarHeight: 0,
+          //   pinned: true,
+          //   collapsedHeight: 64,
+          //   elevation: 2,
+          //   scrolledUnderElevation: 0,
+          //   floating: true,
+          //   // collapsedHeight: 200,
+          //   flexibleSpace: PreferredSize(
+          //     preferredSize: Size.fromHeight(64),
+          //     child: Container(
+          //       color: Colors.amberAccent,
+          //       child: TextField(
+          //         decoration: InputDecoration(
+          //           border: OutlineInputBorder(gapPadding: 0),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          //   // title: TextField(),
+          //   // bottom:   TextFormField(),
+          // ),
+
+          // const SliverToBoxAdapter(child: SizedBox(height: 8)),
+
+          SliverList.separated(
+            itemCount: data.emails.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 4.0),
+            itemBuilder: (context, index) {
+              return EmailWidget(
+                email: data.emails[index],
+                onSelected:
+                    onSelected != null ? () => onSelected!(index) : null,
+                isSelected: selectedIndex == index,
+              );
+            },
+          ),
+
+          // SliverList.separated(
+          //   itemCount: data.emails.length,
+          //   separatorBuilder: (_, __) => const SizedBox(height: 8.0),
+          //   itemBuilder: (context, index) {
+          //     return Padding(
+          //       padding: const EdgeInsets.only(bottom: 8.0),
+          //       child: EmailWidget(
+          //         email: data.emails[index],
+          //         onSelected:
+          //             onSelected != null ? () => onSelected!(index) : null,
+          //         isSelected: selectedIndex == index,
+          //       ),
+          //     );
+          //   },
+          // ),
+        ],
+      ),
+    );
+
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: CustomScrollView(
         slivers: [
@@ -82,7 +177,7 @@ class SliverEmailListView extends StatelessWidget {
           // search_bar.SearchBar(currentUser: currentUser),
           // const SizedBox(height: 8),
           if (top != null) ...[
-            // const SliverToBoxAdapter(child: SizedBox(height: 8)),
+            const SliverToBoxAdapter(child: SizedBox(height: 12)),
             top!,
           ],
           const SliverToBoxAdapter(child: SizedBox(height: 8)),

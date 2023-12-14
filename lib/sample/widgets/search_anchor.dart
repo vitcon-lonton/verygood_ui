@@ -72,7 +72,7 @@ class _RepliesSearchAnchorState extends State<RepliesSearchAnchor> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 56,
+      height: 52,
       child: SearchBarTheme(
         data: SearchBarTheme.of(context).copyWith(
           shadowColor: MaterialStateProperty.all(Colors.transparent),

@@ -32,12 +32,12 @@ class _StarButtonState extends State<StarButton> {
       turns: turns,
       curve: Curves.decelerate,
       duration: const Duration(milliseconds: 300),
-      child: IconButton.filledTonal(
+      child: IconButton.filled(
         icon: icon,
         onPressed: () => _toggle(),
-        // style: IconButton.styleFrom(
-        //   backgroundColor: Theme.of(context).colorScheme.surface,
-        // ),
+        style: IconButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+        ),
       ),
     );
   }

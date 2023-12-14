@@ -13,11 +13,16 @@ class StarButton extends StatefulWidget {
 
 class _StarButtonState extends State<StarButton> {
   bool state = false;
-
-  double get turns => state ? 1 : 0;
+  late final ColorScheme _colorScheme = Theme.of(context).colorScheme;
 
   Icon get icon {
-    return Icon(state ? Icons.star_rounded : Icons.star_border_rounded);
+    final IconData iconData = state ? Icons.star : Icons.star_outline;
+
+    return Icon(
+      iconData,
+      color: Colors.grey,
+      size: 20,
+    );
   }
 
   void _toggle() {
@@ -26,18 +31,23 @@ class _StarButtonState extends State<StarButton> {
     });
   }
 
+  double get turns => state ? 1 : 0;
+
   @override
   Widget build(BuildContext context) {
     return AnimatedRotation(
       turns: turns,
       curve: Curves.decelerate,
       duration: const Duration(milliseconds: 300),
-      child: IconButton.filledTonal(
-        icon: icon,
+      child: FloatingActionButton(
+        elevation: 0,
+        shape: const CircleBorder(),
+        backgroundColor: _colorScheme.surface,
         onPressed: () => _toggle(),
-        // style: IconButton.styleFrom(
-        //   backgroundColor: Theme.of(context).colorScheme.surface,
-        // ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: icon,
+        ),
       ),
     );
   }

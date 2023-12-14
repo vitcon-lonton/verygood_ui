@@ -41,7 +41,9 @@ class RailAnimation extends CurvedAnimation {
 
 class RailFabAnimation extends CurvedAnimation {
   RailFabAnimation({required super.parent})
-      : super(curve: const Interval(3 / 5, 1));
+      : super(
+          curve: const Interval(3 / 5, 1),
+        );
 }
 
 class ScaleAnimation extends CurvedAnimation {
